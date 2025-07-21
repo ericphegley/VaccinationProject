@@ -1,0 +1,17 @@
+.dashboard-container {
+  padding: 2rem;
+}
+
+.chart-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.dashboard-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: #2c3e50;
+}

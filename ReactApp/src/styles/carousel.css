@@ -1,0 +1,21 @@
+.carousel-slide {
+    margin: 0 auto;
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 200px; 
+    width: 100px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.carousel-slide h3{
+    text-align: center;
+    width: 100%;
+    padding: 20px;
+    color: black;
+}
+

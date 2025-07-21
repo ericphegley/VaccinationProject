@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { addAppointment, selectAppointment } from '../state/appointment/appointmentSlice';
 import { useNavigate } from 'react-router-dom';
-
+import "../styles/appointments.css";
 
 const Appointments = () => {
   const dispatch = useDispatch();
@@ -45,7 +45,7 @@ const Appointments = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ padding: '1rem' }}>
+    <form onSubmit={handleSubmit} className="appointment-form-container">
       <h2>Schedule Appointment</h2>
 
       <label>Hospital:</label>

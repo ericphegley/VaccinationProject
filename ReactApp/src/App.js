@@ -10,7 +10,9 @@ import DisplayVaccines from './components/DisplayVaccines';
 import AppointmentForm from './components/Appointments';
 import Schedule from './components/Schedule';
 import AdminApproval from './components/AdminApproval';
-import PieChart from './components/PieChart';
+import Home from './components/Home';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 console.log("AdminApproval component is:", AdminApproval);
 const App = () => {
   return (
@@ -20,7 +22,7 @@ const App = () => {
         <Route path="/" element={<UserForm />} />
         <Route path="/login" element={<UserForm />} />
         <Route path="/register" element={<RegisterForm />} />
-        <Route path="/home" element={<PieChart />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/hospitals" element={<DisplayHospitals />} />
         <Route path="/vaccines" element={<DisplayVaccines />} />
         <Route path="/appointments" element={<AppointmentForm />} />
