@@ -36,6 +36,24 @@ const Schedule = () => {
       alert('Failed to update appointment status.');
     }
   };
+  const downloadPDF = async (id) => {
+  try {
+    const res = await axios.get(`http://localhost:8082/api/appointments/${id}/pdf`, {
+      responseType: 'blob',
+    });
+
+    const url = window.URL.createObjectURL(new Blob([res.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `appointment_${id}.pdf`);
+    document.body.appendChild(link);
+    link.click();
+    link.remove(); // clean up
+  } catch (error) {
+    console.error('Failed to download PDF:', error);
+    alert('Failed to download PDF.');
+  }
+};
 
   const now = new Date();
   const upcoming = appointments.filter(app => new Date(app.scheduledDate) > now);
@@ -79,6 +97,11 @@ const Schedule = () => {
                 {app.status === 'Approved' ? (
                   <button onClick={() => handlePay(app._id)}>Pay</button>
                 ) : ''}
+              </td>
+              <td>
+                {app.status === 'Paid & Scheduled' && (
+                  <button onClick={() => downloadPDF(app._id)}>Download PDF</button>
+                )}
               </td>
               {includeSuccessMark && (
                 <td style={{ color: 'green', fontWeight: 'bold' }}>✅ Successfully Vaccinated</td>

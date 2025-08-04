@@ -4,6 +4,9 @@ const Appointment = require('../models/Appointment');
 const User = require('../models/User'); 
 const Hospital = require('../models/Hospital');
 const Vaccine = require('../models/Vaccine');
+const fs = require('fs');
+const path = require('path');
+const PDFDocument = require('pdfkit');
 
 router.post('/addAppointment', async (req, res) => {
   try {
@@ -85,11 +88,42 @@ router.put('/:id/status', async (req, res) => {
     if (!updated) {
       return res.status(404).json({ error: 'Appointment not found' });
     }
+    if (status === 'Paid & Scheduled') {
+      const doc = new PDFDocument();
+      const filePath = path.join(__dirname, '..', 'pdfs', `${updated._id}.pdf`);
+      const stream = fs.createWriteStream(filePath);
+      doc.pipe(stream);
+
+      doc.fontSize(20).text('Vaccination Appointment Details', { align: 'center' });
+      doc.moveDown();
+
+      doc.fontSize(12);
+      doc.text(`Date: ${new Date(updated.scheduledDate).toLocaleString()}`);
+      doc.text(`Status: ${updated.status}`);
+      doc.text(`Hospital Name: ${updated.hospital.name}`);
+      doc.text(`Hospital Address: ${updated.hospital.address}`);
+      doc.text(`Hospital Type: ${updated.hospital.type}`);
+      doc.text(`Charges: $${updated.hospital.charges}`);
+      doc.text(`Vaccine Name: ${updated.vaccine.name}`);
+      doc.text(`Vaccine Type: ${updated.vaccine.type}`);
+      doc.text(`Doses Required: ${updated.vaccine.doses}`);
+      doc.end();
+    }
 
     res.json(updated);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
+
+router.get('/:id/pdf', async (req, res) => {
+  const filePath = path.join(__dirname, '..', 'pdfs', `${req.params.id}.pdf`);
+
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({ error: 'PDF not found. Please make payment first.' });
+  }
+
+  res.download(filePath, `appointment_${req.params.id}.pdf`);
 });
 
 router.get('/report/gender-distribution', async (req, res) => {
